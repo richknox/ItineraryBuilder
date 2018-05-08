@@ -49,9 +49,6 @@
           <h2>User Routes</h2>
           <p>Select routes to include in the intinerary by clicking on each 
             route. When you're done selecting routes, choose "Select Routes".</p>
-          <!--
-          <table id="FullRoutesTable" class="display" cellspacing="0" width="100%">
-            -->
           <table id="FullRoutesTable" class="display compact">
           </table>
         </div>
@@ -66,34 +63,9 @@
         <div id="Itinerary" hidden="true">
           <h2>Itinerary</h2>
           <table id="ItineraryTable" class="display compact">
-            <!-- 
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Latitude</th>
-              <th>Longitude</th>
-              <th>Closest Index</th>
-              <th>Closest Latitude</th>
-              <th>Closest Longitude</th>
-              <th>Delta</th>
-              <th>Distance</th>
-              <th>Gain</th>
-              <th>Loss</th>
-            </tr>
-            <tr id="ItineraryTableTemplate">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-              -->
           </table>
         </div>
       </div>
-    </div>
-      
-    <div id="Error" hidden="true">
-      <h2>Error</h2>
     </div>
   </div>
   
@@ -102,6 +74,7 @@
   <script src="scripts/UserRoutes.js"></script>
   <script src="scripts/SelectedRoutes.js"></script>
   <script src="scripts/Itinerary.js"></script>
+  <script src="scripts/Cookies.js"></script>
   <script src="scripts/Geo.js"></script>
   <script>
     "use strict";
@@ -113,10 +86,8 @@
       let userRoutes = new UserRoutes(rwgpsApi);
       let selectedRoutes = new SelectedRoutes();
       let itinerary = new Itinerary(rwgpsApi);
-      //let error = new Error();
       
       userInfo.GetCurrentUser();
-    
     });
   </script>
 </body>

@@ -17,7 +17,6 @@ function Itinerary(rwgpsApi) {
 
   $(IB_EVENT_TARGET).on(GENERATE_ITINERARY, function(event, data) {
     console.log("GenerateItinerary - Itinerary");
-    //console.log(data);
     
     _this.selectedRoutes = data;
     if (_this.selectedRoutes.length > 0) {
@@ -29,18 +28,17 @@ function Itinerary(rwgpsApi) {
   
   this.GetRoutes = function() {
     let i = this.routeData.length;
-    let routeId = this.selectedRoutes[i][0];
+    let routeId = this.selectedRoutes[i];
     console.log("Iteration: " + i + ", Route ID: " + routeId);
     
     let success = function(data, textStatus, jqXHR) {
       console.log("GetRoute succeeded.");
-      //console.log(data);
       
       _this.routeData.push(data.route);
       if (_this.routeData.length < _this.selectedRoutes.length) {
         _this.GetRoutes();
       } else {
-        _this.GenerateItinerary()
+        _this.GenerateItinerary();
       }
     };
     let error = function(jqXhr, textStatus, errorThrown) {
@@ -81,7 +79,7 @@ function Itinerary(rwgpsApi) {
       }
 
       segmentItinerary.sort(function(a, b) {
-        return a.index - b.index;
+        return a[1] - b[1];
       });
       
       $.merge(this.itinerary, segmentItinerary);
@@ -175,90 +173,5 @@ function Itinerary(rwgpsApi) {
       scrollCollapse: true,
       paging: false
     });
-    
-      
-      
-/*      
-      
-
-      $.each(pointsOfInterest.data, function(index, value) {
-        console.log(index, value);
-        let closestPoint = trackPoints.data[value.closest];
-    
-        let poiData = [
-          value.n, 
-          value.d.replace(/\n/g, "<br/>"), 
-          value.lat.toFixed(6), 
-          value.lng.toFixed(6), 
-          value.closest, 
-          closestPoint.y.toFixed(6), 
-          closestPoint.x.toFixed(6), 
-          value.delta.toPrecision(3), 
-          value.distance.toFixed(1), 
-          value.gain.toFixed(0), 
-          value.loss.toFixed(0)];
-        let poiRow = "<tr>";
-        $.each(poiData, function(index, value) {
-          poiRow += "<td>" + value + "</td>";
-        });
-        poiRow += "</tr>";
-        poiElement = $(poiRow);
-        itineraryTableTemplate.before(poiElement);
-      });
-    }
-    */
-    
   };
-  
-  this.ShowItinerary = function() {  
-    
-    /*
-    $.ajax({
-      url: routeDataUrl,
-      //jsonp: "jsonpCallback",
-      dataType: "jsonp",
-      success: function(data, textStatus, jqHXR) {
-        routeData = data.route;
-      
-        let summary = "<h1>Summary</h1>";
-        summary += "<p><b>Name:</b> " + routeData.name + "<br/>";
-        summary += "<b>Description:</b> " + routeData.description + " <br/>";
-        summary += "</p>";
-        $("#Summary").html(summary);
-      
-        trackPoints.init(routeDataUrl, routeData.track_points);
-        pointsOfInterest.init(routeDataUrl, routeData.points_of_interest);
-      
-        pointsOfInterest.computeItinerary(trackPoints);
-      
-        let itineraryTableTemplate = $("#ItineraryTableTemplate");
-      
-        $.each(pointsOfInterest.data, function(index, value) {
-          console.log(index, value);
-          let closestPoint = trackPoints.data[value.closest];
-      
-          let poiData = [
-            value.n, 
-            value.d.replace(/\n/g, "<br/>"), 
-            value.lat.toFixed(6), 
-            value.lng.toFixed(6), 
-            value.closest, 
-            closestPoint.y.toFixed(6), 
-            closestPoint.x.toFixed(6), 
-            value.delta.toPrecision(3), 
-            value.distance.toFixed(1), 
-            value.gain.toFixed(0), 
-            value.loss.toFixed(0)];
-          let poiRow = "<tr>";
-          $.each(poiData, function(index, value) {
-            poiRow += "<td>" + value + "</td>";
-          });
-          poiRow += "</tr>";
-          poiElement = $(poiRow);
-          itineraryTableTemplate.before(poiElement);
-        });
-      }
-    });
-    */  
-  };
-}
+};

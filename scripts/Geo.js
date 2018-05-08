@@ -1,4 +1,4 @@
-//"use strict";
+"use strict";
 
 function TrackPoints(data) {
   this.data = data;

@@ -51,14 +51,10 @@ function SelectedRoutes() {
     });
     
     $(ORDERED_ROUTES_TABLE + " tbody tr").on( "click", "td:eq(8)", function () {
-      //console.log("cell.onclick up");
       let index = _this.routeTable.cell(this).index();
-      //console.log(index);
       if (index.row > 0) {
         let row0 = _this.routeTable.row(index.row);
-        //console.log(row0.data());
         let row1 = _this.routeTable.row(index.row - 1);
-        //console.log(row1.data());
         let temp = row0.data();
         row0.data(row1.data());
         row1.data(temp);
@@ -67,14 +63,10 @@ function SelectedRoutes() {
     } );
     
     $(ORDERED_ROUTES_TABLE + " tbody tr").on( "click", "td:eq(9)", function () {
-      //console.log("cell.onclick down");
       let index = _this.routeTable.cell(this).index();
-      //console.log(index);
       if (index.row < _this.routes.length - 1) {
         let row0 = _this.routeTable.row(index.row);
-        //console.log(row0.data());
         let row1 = _this.routeTable.row(index.row + 1);
-        //console.log(row1.data());
         let temp = row0.data();
         row0.data(row1.data());
         row1.data(temp);
@@ -83,12 +75,14 @@ function SelectedRoutes() {
     } );
     
     $(SHOW_ITINERARY).on("click", function() {
-      //console.log("Show Itinerary clicked.");
       $(ORDERED_ROUTES).hide();
       $(SHOW_ITINERARY).prop("disabled", true);
       let data = _this.routeTable.rows().data();
-      //console.log(data);
-      $(IB_EVENT_TARGET).trigger(GENERATE_ITINERARY, [data]);
+      let routeIds = [];
+      for (let i = 0; i < data.length; i++) {
+        routeIds.push(data[i][0]);
+      }
+      $(IB_EVENT_TARGET).trigger(GENERATE_ITINERARY, [routeIds]);
     });
   };
 };
