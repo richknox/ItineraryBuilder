@@ -19,7 +19,11 @@ function Itinerary(rwgpsApi) {
     console.log("GenerateItinerary - Itinerary");
     
     _this.selectedRoutes = data;
+    
     if (_this.selectedRoutes.length > 0) {
+      let cookies = new Cookies();
+      cookies.SetPreviousRouteIds(_this.selectedRoutes);
+    
       _this.GetRoutes();
     } else {
       alert("No itinerary routes.");

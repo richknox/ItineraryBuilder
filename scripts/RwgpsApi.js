@@ -8,6 +8,7 @@ const GENERATE_ITINERARY = "ib:generateItinerary";
 // Event targets
 const IB_EVENT_TARGET = "#ItineraryBuilder";
 
+const USE_PREVIOUS = "#UsePrevious";
 const SELECT_ROUTES = "#SelectRoutes";
 const SHOW_ITINERARY = "#ShowItinerary";
 

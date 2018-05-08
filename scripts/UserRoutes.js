@@ -80,13 +80,40 @@ function UserRoutes(rwgpsApi) {
         $(this).toggleClass("selected");
     } );
     
+    console.log("Look for previous route IDs cookie.");
+    let cookies = new Cookies();
+    let previousRouteIds = cookies.GetPreviousRouteIds();
+    let valid = (previousRouteIds.length > 0);
+    for (let i = 0; valid && i < previousRouteIds.length; i++) {
+      let prevId = previousRouteIds[i];
+      let found = false;
+      for (let j = 0; !found && j < this.routes.length; j++) {
+        found = (prevId == this.routes[j].id);
+      }
+      valid = found;
+    }
+    console.log(valid);
+    console.log(previousRouteIds);
+    if (valid) {
+      $(USE_PREVIOUS).on("click", function() {
+        $(FULL_ROUTES).hide();
+        $(USE_PREVIOUS).button("disable");
+        $(IB_EVENT_TARGET).trigger(GENERATE_ITINERARY, [previousRouteIds]);
+      });
+      $(USE_PREVIOUS).button("enable");
+    }
+    
+    console.log("Install Select Routes handler.");
     $(SELECT_ROUTES).on("click", function() {
       console.log("Select Routes clicked.");
       $(FULL_ROUTES).hide();
-      $(SELECT_ROUTES).prop("disabled", true);
+      $(SELECT_ROUTES).button("disable");
+      $(USE_PREVIOUS).button("disable");
       let data = _this.routeTable.rows('.selected').data();
       console.log(data);
       $(IB_EVENT_TARGET).trigger(ROUTES_SELECTED, [data]);
     });
+    console.log("Enable Select Routes.");
+    $(SELECT_ROUTES).button("enable");
   };
 };

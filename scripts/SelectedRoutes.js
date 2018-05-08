@@ -76,7 +76,7 @@ function SelectedRoutes() {
     
     $(SHOW_ITINERARY).on("click", function() {
       $(ORDERED_ROUTES).hide();
-      $(SHOW_ITINERARY).prop("disabled", true);
+      $(SHOW_ITINERARY).button("disable");
       let data = _this.routeTable.rows().data();
       let routeIds = [];
       for (let i = 0; i < data.length; i++) {
@@ -84,5 +84,6 @@ function SelectedRoutes() {
       }
       $(IB_EVENT_TARGET).trigger(GENERATE_ITINERARY, [routeIds]);
     });
+    $(SHOW_ITINERARY).button("enable");
   };
 };

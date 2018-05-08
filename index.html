@@ -40,6 +40,7 @@
           <div id="UserDetails" hidden="true">
           </div>
         </div>
+        <button id="UsePrevious">Use Previous Routes</button>
         <button id="SelectRoutes">Select Routes</button>
         <button id="ShowItinerary">Show Itinerary</button>
       </div>
@@ -80,7 +81,7 @@
     "use strict";
 
     $( document ).ready(function() {
-      $( "button" ).button();
+      $( "button" ).button({disabled: true});
       let rwgpsApi = new RwgpsApi();
       let userInfo = new UserInfo(rwgpsApi);
       let userRoutes = new UserRoutes(rwgpsApi);

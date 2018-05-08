@@ -3,10 +3,10 @@
 function Cookies() {
   const PREVIOUS_ROUTE_IDS = "previousRouteIds"
   
-  this.getPreviousRouteIds = function() {
+  this.GetPreviousRouteIds = function() {
     if (this.previousRouteIds === undefined) {
       this.previousRouteIds = [];
-      let prev = getCookie(PREVIOUS_ROUTE_IDS);
+      let prev = GetCookie(PREVIOUS_ROUTE_IDS);
       if (prev != "") {
         let a = prev.split(',');
         for (let i = 0; i < a.length; i++) {
@@ -17,20 +17,25 @@ function Cookies() {
     return this.previousRouteIds;
   };
   
-  this.setPreviousRouteIds = function(routeIds) {
+  this.SetPreviousRouteIds = function(routeIds) {
     this.previousRouteIds = routeIds;
-    setCookie(PREVIOUS_ROUTE_IDS, this.previousRouteIds.toString(), 90);
-  }
+    SetCookie(PREVIOUS_ROUTE_IDS, this.previousRouteIds.toString(), 90);
+  };
+  
+  this.DeletePreviousRouteIds = function() {
+    this.previousRouteIds = [];
+    DeleteCookie(PREVIOUS_ROUTE_IDS);
+  };
 }
 
-function setCookie(cname, cvalue, exdays) {
+function SetCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
   var expires = "expires=" + d.toGMTString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
-function getCookie(cname) {
+function GetCookie(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);
   var ca = decodedCookie.split(';');
@@ -46,3 +51,6 @@ function getCookie(cname) {
   return "";
 }
 
+function DeleteCookie(cname) {
+  setCookie(cname, "", -1);
+}
