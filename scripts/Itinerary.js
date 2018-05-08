@@ -31,6 +31,7 @@ function Itinerary(rwgpsApi) {
   });
   
   this.GetRoutes = function() {
+    $("body").css("cursor", "progress");
     let i = this.routeData.length;
     let routeId = this.selectedRoutes[i];
     console.log("Iteration: " + i + ", Route ID: " + routeId);
@@ -42,10 +43,12 @@ function Itinerary(rwgpsApi) {
       if (_this.routeData.length < _this.selectedRoutes.length) {
         _this.GetRoutes();
       } else {
+        $("body").css("cursor", "default");
         _this.GenerateItinerary();
       }
     };
     let error = function(jqXhr, textStatus, errorThrown) {
+      $("body").css("cursor", "default");
       alert("Failed to get route data.");
     };
 

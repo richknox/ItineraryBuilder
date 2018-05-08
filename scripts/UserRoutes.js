@@ -97,6 +97,7 @@ function UserRoutes(rwgpsApi) {
     if (valid) {
       $(USE_PREVIOUS).on("click", function() {
         $(FULL_ROUTES).hide();
+        $(SELECT_ROUTES).button("disable");
         $(USE_PREVIOUS).button("disable");
         $(IB_EVENT_TARGET).trigger(GENERATE_ITINERARY, [previousRouteIds]);
       });
