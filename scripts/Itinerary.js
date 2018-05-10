@@ -95,6 +95,69 @@ function Itinerary(rwgpsApi) {
     this.rwgpsApi.GetRoute(routeId, success, error);
   };
   
+  this.GetTable = function() {
+    if (this.itineraryTable === undefined) {
+      let columnHeaders = [
+        { title: "Segment" },
+        { title: "Index" },
+        { title: "Name" },
+        { title: "Description", width: "20%", orderable: false/*, visible: false*/ },
+        { title: "Latitude" },
+        { title: "Longitude" },
+        { title: "Closest Latitude" },
+        { title: "Closest Longitude" },
+        { title: "Delta" },
+        { title: "Distance (miles)", orderable: false },
+        { title: "Elevation Gain (feet)", orderable: false },
+        { title: "Elevation Loss (feet)", orderable: false }
+      ];
+        
+      $(ITINERARY).show();
+      this.itineraryTable = $(ITINERARY_TABLE).DataTable({
+        data: this.itinerary,
+        columnDefs: [
+          { targets: "_all", orderable: false },
+          {
+            render: function(data, type, row) {
+              return data.toFixed(6);
+            },
+            targets: [4, 5, 6, 7]
+          },
+          {
+            render: function(data, type, row) {
+              return data.toFixed(3);
+            },
+            targets: [8]
+          },
+          {
+            render: function(data, type, row) {
+              return data.toFixed(1);
+            },
+            targets: [9]
+          },
+          {
+            render: function(data, type, row) {
+              return data.toFixed(0);
+            },
+            targets: [10, 11]
+          }
+        ],
+        columns: columnHeaders,
+        order: [],
+        scrollY: "500px",
+        scrollCollapse: true,
+        paging: false
+      });
+    }
+    
+    return this.itineraryTable;
+  };
+  
+  this.SetTableData = function(data) {
+    let table = this.GetTable();
+    table.clear().rows.add(data).draw();
+  }
+  
   this.GenerateItinerary = function() {
     console.log("Generate Itinerary");
     console.log(this.routeData);
@@ -172,57 +235,7 @@ function Itinerary(rwgpsApi) {
 
     console.log("Finished itinerary.");
     console.log(this.itinerary);
-  
-    let columnHeaders = [
-      { title: "Segment" },
-      { title: "Index" },
-      { title: "Name" },
-      { title: "Description", width: "20%", orderable: false/*, visible: false*/ },
-      { title: "Latitude" },
-      { title: "Longitude" },
-      { title: "Closest Latitude" },
-      { title: "Closest Longitude" },
-      { title: "Delta" },
-      { title: "Distance (miles)", orderable: false },
-      { title: "Elevation Gain (feet)", orderable: false },
-      { title: "Elevation Loss (feet)", orderable: false }
-    ];
-        
-    $(ITINERARY).show();
-    this.itineraryTable = $(ITINERARY_TABLE).DataTable({
-      data: this.itinerary,
-      columnDefs: [
-        { targets: "_all", orderable: false },
-        {
-          render: function(data, type, row) {
-            return data.toFixed(6);
-          },
-          targets: [4, 5, 6, 7]
-        },
-        {
-          render: function(data, type, row) {
-            return data.toFixed(3);
-          },
-          targets: [8]
-        },
-        {
-          render: function(data, type, row) {
-            return data.toFixed(1);
-          },
-          targets: [9]
-        },
-        {
-          render: function(data, type, row) {
-            return data.toFixed(0);
-          },
-          targets: [10, 11]
-        }
-      ],
-      columns: columnHeaders,
-      order: [],
-      scrollY: "500px",
-      scrollCollapse: true,
-      paging: false
-    });
+    
+    this.SetTableData(this.itinerary);
   };
 };
