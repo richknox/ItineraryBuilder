@@ -66,8 +66,8 @@ body {
 }
 
 /* Custom handle for sliders */
-.ib-custom-handle {
-  width: 5em; /*3em;*/
+#ThresholdHandle, #FilterHandle {
+  width: 3em;
   height: 1.6em;
   top: 50%;
   margin-top: -.8em;

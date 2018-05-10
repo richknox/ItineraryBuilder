@@ -54,7 +54,8 @@ function Cookies() {
   };
   
   this.GetThreshold = function() {
-    return parseInt(this.GetCookie(THRESHOLD));
+    let threshold = parseInt(this.GetCookie(THRESHOLD));
+    return isNaN(threshold) ? 0 : threshold;
   };
   
   this.SetThreshold = function(value) {
@@ -62,7 +63,8 @@ function Cookies() {
   };
   
   this.GetFilter = function() {
-    return parseInt(this.GetCookie(FILTER));
+    let filter = parseInt(this.GetCookie(FILTER));
+    return isNaN(filter) ? 0 : filter;
   };
   
   this.SetFilter = function(value) {

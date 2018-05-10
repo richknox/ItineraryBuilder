@@ -1,11 +1,9 @@
 "use strict";
 
-function TrackPoints(data) {
+function TrackPoints(data, threshold, filter) {
   this.data = data;
-  
-  const ELEVATION_THRESHOLD = 5;
-  const ELEVATION_LEAD = 3;
-  const ELEVATION_LAG = 3;
+  this.threshold = threshold;
+  this.filter = filter;
   
   // Find closest track point to a point of interest.
   this.findClosestPointIndex = function(poi) {
@@ -38,10 +36,10 @@ function TrackPoints(data) {
     for (let index = start + 1; index < end; ++index) {
       let elevation = this.data[index].smoothElevation;
       let delta = elevation - base;
-      if (delta > ELEVATION_THRESHOLD) {
+      if (delta > this.threshold) {
         gain += delta;
         base = elevation;
-      } else if (delta < -ELEVATION_THRESHOLD) {
+      } else if (delta < -this.threshold) {
         base = elevation;
       }
     }
@@ -57,10 +55,10 @@ function TrackPoints(data) {
     for (let index = start + 1; index < end; ++index) {
       let elevation = this.data[index].smoothElevation;
       let delta = elevation - base;
-      if (delta < -ELEVATION_THRESHOLD) {
+      if (delta < -this.threshold) {
         loss -= delta;
         base = elevation;
-      } else if (delta > ELEVATION_THRESHOLD) {
+      } else if (delta > this.threshold) {
         base = elevation;
       }
     }
@@ -72,8 +70,8 @@ function TrackPoints(data) {
     let movingSum = 0;
     
     let index = 0;
-    let start = Math.max(0, index - ELEVATION_LAG);
-    let end = Math.min(index + ELEVATION_LEAD, this.data.length - 1);
+    let start = Math.max(0, index - this.filter);
+    let end = Math.min(index + this.filter, this.data.length - 1);
     
     for (let i = start; i <= end; ++i) {
       movingSum += this.data[i].e;
@@ -82,11 +80,11 @@ function TrackPoints(data) {
     while (index < this.data.length) {
       this.data[index].smoothElevation = movingSum / (end - start + 1);
       if (++index < this.data.length) {
-        start = Math.max(0, index - ELEVATION_LAG);
+        start = Math.max(0, index - this.filter);
         if (start > 0) {
           movingSum -= this.data[start - 1].e;
         }
-        end = Math.min(index + ELEVATION_LEAD, this.data.length - 1);
+        end = Math.min(index + this.filter, this.data.length - 1);
         if (end < this.data.length) {
           movingSum += this.data[end].e;
         }

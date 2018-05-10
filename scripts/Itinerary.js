@@ -13,6 +13,10 @@ function Itinerary(rwgpsApi) {
   const ITINERARY = "#Itinerary";
   const ITINERARY_TABLE = "#ItineraryTable";
   
+  const THRESHOLD_SLIDER = "#ThresholdSlider";
+  const FILTER_SLIDER = "#FilterSlider";
+  const RECALCULATE = "#Recalculate";
+  
   const _this = this; // Make a copy of object context (this) for closures.
 
   $(IB_EVENT_TARGET).on(GENERATE_ITINERARY, function(event, data) {
@@ -32,25 +36,38 @@ function Itinerary(rwgpsApi) {
   });
   
   this.InitControls = function() {
+    let cookies = new Cookies();
+    
     let thresholdHandle = $( "#ThresholdHandle" );
-    $( "#ThresholdSlider" ).slider({
+    $(THRESHOLD_SLIDER).slider({
       create: function() {
         thresholdHandle.text( $( this ).slider( "value" ) );
       },
       slide: function( event, ui ) {
         thresholdHandle.text( ui.value );
-      }
+      },
+      max: 20,
+      value: cookies.GetThreshold()
     });
     
     let filterHandle = $( "#FilterHandle" );
-    $( "#FilterSlider" ).slider({
+    $(FILTER_SLIDER).slider({
       create: function() {
         filterHandle.text( $( this ).slider( "value" ) );
       },
       slide: function( event, ui ) {
         filterHandle.text( ui.value );
-      }
+      },
+      max: 10,
+      value: cookies.GetFilter()
     });
+    
+    $(RECALCULATE).on("click", function() {
+      cookies.SetThreshold($(THRESHOLD_SLIDER).slider("value"));
+      cookies.SetFilter($(FILTER_SLIDER).slider("value"));
+      _this.GenerateItinerary();
+    });
+    $(RECALCULATE).button("enable");
   };
   
   this.GetRoutes = function() {
@@ -82,10 +99,14 @@ function Itinerary(rwgpsApi) {
     console.log("Generate Itinerary");
     console.log(this.routeData);
     
+    let cookies = new Cookies();
+    let threshold = cookies.GetThreshold();
+    let filter = cookies.GetFilter();
+    
     this.trackPointsArray = [];
     this.itinerary = [];
     for (let i = 0; i < this.routeData.length; i++) {
-      let trackPoints = new TrackPoints(this.routeData[i].track_points);
+      let trackPoints = new TrackPoints(this.routeData[i].track_points, threshold, filter);
       this.trackPointsArray.push(trackPoints);
       let pointsOfInterest = this.routeData[i].points_of_interest;
       
