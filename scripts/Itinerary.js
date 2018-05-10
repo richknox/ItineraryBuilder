@@ -22,13 +22,36 @@ function Itinerary(rwgpsApi) {
     
     if (_this.selectedRoutes.length > 0) {
       let cookies = new Cookies();
-      cookies.SetPreviousRouteIds(_this.selectedRoutes);
+      cookies.SetRouteIds(_this.selectedRoutes);
     
+      _this.InitControls();
       _this.GetRoutes();
     } else {
       alert("No itinerary routes.");
     }
   });
+  
+  this.InitControls = function() {
+    let thresholdHandle = $( "#ThresholdHandle" );
+    $( "#ThresholdSlider" ).slider({
+      create: function() {
+        thresholdHandle.text( $( this ).slider( "value" ) );
+      },
+      slide: function( event, ui ) {
+        thresholdHandle.text( ui.value );
+      }
+    });
+    
+    let filterHandle = $( "#FilterHandle" );
+    $( "#FilterSlider" ).slider({
+      create: function() {
+        filterHandle.text( $( this ).slider( "value" ) );
+      },
+      slide: function( event, ui ) {
+        filterHandle.text( ui.value );
+      }
+    });
+  };
   
   this.GetRoutes = function() {
     $("body").css("cursor", "progress");

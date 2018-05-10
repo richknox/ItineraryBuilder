@@ -82,7 +82,7 @@ function UserRoutes(rwgpsApi) {
     
     console.log("Look for previous route IDs cookie.");
     let cookies = new Cookies();
-    let previousRouteIds = cookies.GetPreviousRouteIds();
+    let previousRouteIds = cookies.GetRouteIds();
     let valid = (previousRouteIds.length > 0);
     for (let i = 0; valid && i < previousRouteIds.length; i++) {
       let prevId = previousRouteIds[i];

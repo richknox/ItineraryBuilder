@@ -64,3 +64,13 @@ body {
         width: 100%;
     }
 }
+
+/* Custom handle for sliders */
+.ib-custom-handle {
+  width: 5em; /*3em;*/
+  height: 1.6em;
+  top: 50%;
+  margin-top: -.8em;
+  text-align: center;
+  line-height: 1.6em;  
+}
