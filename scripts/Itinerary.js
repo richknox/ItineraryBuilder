@@ -112,15 +112,15 @@ function Itinerary(rwgpsApi) {
   this.GetTable = function() {
     if (this.itineraryTable === undefined) {
       let columnHeaders = [
-        { title: "Segment" },
-        { title: "Index" },
+        { title: "Segment", visible: false },
+        { title: "Index", visible: false },
         { title: "Name" },
-        { title: "Description", width: "20%", orderable: false/*, visible: false*/ },
-        { title: "Latitude" },
-        { title: "Longitude" },
-        { title: "Closest Latitude" },
-        { title: "Closest Longitude" },
-        { title: "Delta" },
+        { title: "Description", width: "20%", orderable: false },
+        { title: "Latitude", visible: false },
+        { title: "Longitude", visible: false },
+        { title: "Closest Latitude", visible: false },
+        { title: "Closest Longitude", visible: false },
+        { title: "Delta", visible: false },
         { title: "Distance (miles)", orderable: false },
         { title: "Elevation Gain (feet)", orderable: false },
         { title: "Elevation Loss (feet)", orderable: false }
@@ -135,25 +135,25 @@ function Itinerary(rwgpsApi) {
             render: function(data, type, row) {
               return data.toFixed(6);
             },
-            targets: [4, 5, 6, 7]
+            targets: [LATITUDE, LONGITUDE, CLOSEST_LATITUDE, CLOSEST_LONGITUDE]
           },
           {
             render: function(data, type, row) {
               return data.toFixed(3);
             },
-            targets: [8]
+            targets: [DELTA]
           },
           {
             render: function(data, type, row) {
               return data.toFixed(1);
             },
-            targets: [9]
+            targets: [DISTANCE]
           },
           {
             render: function(data, type, row) {
               return data.toFixed(0);
             },
-            targets: [10, 11]
+            targets: [ELEVATION_GAIN, ELEVATION_LOSS]
           }
         ],
         columns: columnHeaders,
