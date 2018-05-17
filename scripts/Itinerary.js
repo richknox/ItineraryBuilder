@@ -20,16 +20,18 @@ function Itinerary(rwgpsApi) {
   // Column indexes
 	const SEGMENT = 0;
 	const INDEX = 1;
-	const NAME = 2;
-	const DESCRIPTION = 3;
-	const LATITUDE = 4;
-	const LONGITUDE = 5;
-	const CLOSEST_LATITUDE = 6;
-	const CLOSEST_LONGITUDE = 7;
-	const DELTA = 8;
-	const DISTANCE = 9;
-	const ELEVATION_GAIN = 10;
-	const ELEVATION_LOSS = 11;
+  const DAY_NUMBER = 2;
+  const DATE = 3;
+	const NAME = 4;
+	const DESCRIPTION = 5;
+	const LATITUDE = 6;
+	const LONGITUDE = 7;
+	const CLOSEST_LATITUDE = 8;
+	const CLOSEST_LONGITUDE = 9;
+	const DELTA = 10;
+	const DISTANCE = 11;
+	const ELEVATION_GAIN = 12;
+	const ELEVATION_LOSS = 13;
   
   const _this = this; // Make a copy of object context (this) for closures.
 
@@ -114,6 +116,8 @@ function Itinerary(rwgpsApi) {
       let columnHeaders = [
         { title: "Segment", visible: false },
         { title: "Index", visible: false },
+        { title: "Day Number" },
+        { title: "Date"},
         { title: "Name" },
         { title: "Description", width: "20%", orderable: false },
         { title: "Latitude", visible: false },
@@ -212,6 +216,13 @@ function Itinerary(rwgpsApi) {
       });
       
       $.merge(this.itinerary, segmentItinerary);
+    }
+    
+    let d = new Date(2018, 5, 8);
+    for (let i = 0; i < this.itinerary.length; i++) {
+      this.itinerary[i][DAY_NUMBER] = i + 1;
+      this.itinerary[i][DATE] = d.toDateString();
+      d.setDate(d.getDate() + 1);
     }
 
     console.log("Merged itinerary.");
