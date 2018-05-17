@@ -74,3 +74,22 @@ body {
   text-align: center;
   line-height: 1.6em;  
 }
+
+/* Itinerary control layout */
+.parameter-slider {
+  float: left;
+  width: 40%;
+  padding: 15px;
+}
+
+.parameter-recalc {
+  float: left;
+  width: 20%;
+  padding: 15px;
+}
+
+.parameters:after {
+  content: "";
+  display: table;
+  clear: both;
+}

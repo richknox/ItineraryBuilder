@@ -17,6 +17,20 @@ function Itinerary(rwgpsApi) {
   const FILTER_SLIDER = "#FilterSlider";
   const RECALCULATE = "#Recalculate";
   
+  // Column indexes
+	const SEGMENT = 0;
+	const INDEX = 1;
+	const NAME = 2;
+	const DESCRIPTION = 3;
+	const LATITUDE = 4;
+	const LONGITUDE = 5;
+	const CLOSEST_LATITUDE = 6;
+	const CLOSEST_LONGITUDE = 7;
+	const DELTA = 8;
+	const DISTANCE = 9;
+	const ELEVATION_GAIN = 10;
+	const ELEVATION_LOSS = 11;
+  
   const _this = this; // Make a copy of object context (this) for closures.
 
   $(IB_EVENT_TARGET).on(GENERATE_ITINERARY, function(event, data) {
@@ -178,17 +192,18 @@ function Itinerary(rwgpsApi) {
         let poi = pointsOfInterest[j];
         let closestIndex = trackPoints.findClosestPointIndex(poi);
         let closestPoint = trackPoints.data[closestIndex];
-        let itineraryPoint = [
-          i, // segment
-          closestIndex, // index
-          poi.n, // name
-          poi.d.replace(/\n/g, "<br/>"), // description
-          poi.lat, // lat 
-          poi.lng, // lng 
-          closestPoint.y, // closestLat 
-          closestPoint.x, // closestLng 
-          PythagorasEquirectangular(poi.lat, poi.lng, closestPoint.y, closestPoint.x), // delta
-        ];
+        
+        let itineraryPoint = [];
+        itineraryPoint[SEGMENT] = i;
+        itineraryPoint[INDEX] = closestIndex;
+        itineraryPoint[NAME] = poi.n;
+        itineraryPoint[DESCRIPTION] = poi.d.replace(/\n/g, "<br/>");
+        itineraryPoint[LATITUDE] = poi.lat;
+        itineraryPoint[LONGITUDE] = poi.lng;
+        itineraryPoint[CLOSEST_LATITUDE] = closestPoint.y;
+        itineraryPoint[CLOSEST_LONGITUDE] = closestPoint.x;
+        itineraryPoint[DELTA] = PythagorasEquirectangular(poi.lat, poi.lng, closestPoint.y, closestPoint.x);
+        
         segmentItinerary.push(itineraryPoint);
       }
 
@@ -217,19 +232,21 @@ function Itinerary(rwgpsApi) {
       
       if (startSegment == endSegment) {
         let currentTrackPoints = this.trackPointsArray[endSegment];
-        currentItineraryPoint.push(currentTrackPoints.distance(startIndex, endIndex)); // distance
-        currentItineraryPoint.push(currentTrackPoints.elevationGain(startIndex, endIndex)); // gain
-        currentItineraryPoint.push(currentTrackPoints.elevationLoss(startIndex, endIndex)); // loss
+        
+      	currentItineraryPoint[DISTANCE] = currentTrackPoints.distance(startIndex, endIndex);
+      	currentItineraryPoint[ELEVATION_GAIN] = currentTrackPoints.elevationGain(startIndex, endIndex);
+      	currentItineraryPoint[ELEVATION_LOSS] = currentTrackPoints.elevationLoss(startIndex, endIndex);
       } else {
         let previousTrackPoints = this.trackPointsArray[startSegment];
         let currentTrackPoints = this.trackPointsArray[endSegment];
         let previousLastIndex = previousTrackPoints.data.length - 1;
-        currentItineraryPoint.push(previousTrackPoints.distance(startIndex, previousLastIndex)
-          + currentTrackPoints.distance(0, endIndex)); // distance
-        currentItineraryPoint.push(previousTrackPoints.elevationGain(startIndex, previousLastIndex)
-          + currentTrackPoints.elevationGain(0, endIndex)); // gain
-        currentItineraryPoint.push(previousTrackPoints.elevationLoss(startIndex, previousLastIndex)
-          + currentTrackPoints.elevationLoss(0, endIndex)); // loss
+
+      	currentItineraryPoint[DISTANCE] = previousTrackPoints.distance(startIndex, previousLastIndex)
+          + currentTrackPoints.distance(0, endIndex);
+      	currentItineraryPoint[ELEVATION_GAIN] = previousTrackPoints.elevationGain(startIndex, previousLastIndex)
+          + currentTrackPoints.elevationGain(0, endIndex);
+      	currentItineraryPoint[ELEVATION_LOSS] = previousTrackPoints.elevationLoss(startIndex, previousLastIndex)
+          + currentTrackPoints.elevationLoss(0, endIndex);
       }
     }
 

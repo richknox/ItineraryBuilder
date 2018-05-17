@@ -64,20 +64,26 @@
         <div id="Itinerary" hidden="true">
           <h2>Itinerary</h2>
           <p>Adjust controls for elevation smoothing.</p>
-          <div id="ItineraryControls">
-            <p>Threshold:</p>
-            <div id="ThresholdSlider">
-              <div id="ThresholdHandle" class="ui-slider-handle">
+          <div class="parameters">
+            <div class="parameter-slider">
+              <p>Threshold:</p>
+              <div id="ThresholdSlider">
+                <div id="ThresholdHandle" class="ui-slider-handle">
+                </div>
               </div>
             </div>
             
-            <p>Filter:</p>
-            <div id="FilterSlider">
-              <div id="FilterHandle" class="ui-slider-handle">
+            <div class="parameter-slider">
+              <p>Filter:</p>
+              <div id="FilterSlider">
+                <div id="FilterHandle" class="ui-slider-handle">
+                </div>
               </div>
             </div>
             
-            <button id="Recalculate">Recalculate</button>
+            <div class="parameter-recalc">
+              <button id="Recalculate">Recalculate</button>
+            </div>
           </div>
           <table id="ItineraryTable" class="display compact">
           </table>

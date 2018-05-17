@@ -24,7 +24,7 @@ function TrackPoints(data, threshold, filter) {
   
   // Distance between two track points in miles.
   this.distance = function(start, end) {
-    console.log("distance: " + start + ", " + end);
+    // console.log("distance: " + start + ", " + end);
     return MetersToMiles(this.data[end].d - this.data[start].d);
   };
   
